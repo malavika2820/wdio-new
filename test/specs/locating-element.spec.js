@@ -3,7 +3,7 @@ describe('locating elements', () => {
         await browser.maximizeWindow();
         await browser.url("https://selectors.webdriveruniversity.com/");
     });
-    it.skip('$-locate element', async() => {
+    it('$-locate element', async() => {
         
         await browser.$("//a[@href='#portfolio']").click();
         await browser.pause(3000);
