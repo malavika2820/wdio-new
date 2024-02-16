@@ -21,7 +21,7 @@ exports.config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/**/mathbuddy.spec.js'
+        './test/specs/**/advanced-element-interaction.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -61,6 +61,8 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
+    //logLevel: 'error',
+
     //
     // Set specific log levels per logger
     // loggers:
@@ -131,7 +133,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 600000
     },
 
     //

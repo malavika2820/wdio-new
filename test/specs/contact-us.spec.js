@@ -1,4 +1,4 @@
-describe.skip("webdriver university-contact us page", () => {
+describe("webdriver university-contact us page", () => {
   beforeEach(async () => {
     await browser.maximizeWindow();
     await browser.url("/Contact-Us/contactus.html");
@@ -17,9 +17,11 @@ describe.skip("webdriver university-contact us page", () => {
     await message.setValue("good");
 
     const submit = await $('//input[@value="SUBMIT"]');
+    await browser.debug();
     await submit.click();
 
     const successfulSubmissionHeader = $("#contact_reply > h1");
+    console.log('successfulSubmissionHeader Element:'+JSON.stringify(await successfulSubmissionHeader));
     await expect(successfulSubmissionHeader).toHaveText(
       "Thank You for your Message!"
     );

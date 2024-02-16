@@ -12,12 +12,11 @@ describe("Mathbuddy login page", () => {
     const signin = await $(".sign-in-btn-obs");
     await signin.click();
     await browser.pause(2000);
-
+ 
     const grade1 = await $(
       "#accordionPanel > .accordion-item:nth-of-type(1) > .accordion-header:nth-of-type(1) [type]"
     );
     await grade1.click(); 
-
     const modulename = await $(
       "#accordionPanel .accordion-item:nth-of-type(1) [class='w-100 accordion-item']:nth-of-type(1) [type]"
     );

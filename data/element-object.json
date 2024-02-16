@@ -1,0 +1,35 @@
+{
+  "sessionId": "a18c5fdf837a9aaf9d903bcf738d7e4b",
+  "elementId": "11CD98B1E164D6EE90F7BB1F0726F48D_element_17",
+  "element-6066-11e4-a52e-4f735466cecf": "11CD98B1E164D6EE90F7BB1F0726F48D_element_17",
+  "selector": "#contact_reply > h1",
+  "parent": {
+    "sessionId": "a18c5fdf837a9aaf9d903bcf738d7e4b",
+    "capabilities": {
+      "acceptInsecureCerts": false,
+      "browserName": "chrome",
+      "browserVersion": "121.0.6167.161",
+      "chrome": {
+        "chromedriverVersion": "121.0.6167.85 (3f98d690ad7e59242ef110144c757b2ac4eef1a2-refs/branch-heads/6167@{#1539})",
+        "userDataDir": "C:\\Users\\lenovo\\AppData\\Local\\Temp\\scoped_dir12412_511502353"
+      },
+      "fedcm:accounts": true,
+      "goog:chromeOptions": { "debuggerAddress": "localhost:56021" },
+      "networkConnectionEnabled": false,
+      "pageLoadStrategy": "normal",
+      "platformName": "windows",
+      "proxy": {},
+      "setWindowRect": true,
+      "strictFileInteractability": false,
+      "timeouts": { "implicit": 0, "pageLoad": 300000, "script": 30000 },
+      "unhandledPromptBehavior": "dismiss and notify",
+      "webauthn:extension:credBlob": true,
+      "webauthn:extension:largeBlob": true,
+      "webauthn:extension:minPinLength": true,
+      "webauthn:extension:prf": true,
+      "webauthn:virtualAuthenticators": true
+    }
+  },
+  "isReactElement": false,
+  "isShadowElement": false
+}
