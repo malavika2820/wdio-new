@@ -32,7 +32,7 @@ describe('advance elements', () => {
         await expect(frontendlangDropDown).toHaveValueContaining('CSS',{ignoreCase:true});
         await browser.pause(2000);
     }); 
-    it.only('State commands', async() => {
+    it('State commands', async() => {
         await browser.url("/Dropdown-Checkboxes-RadioButtons/index.html");
         const lettuceRadioButton=await $('[value="lettuce"]');
         const lettuceRadioButton_isDisplayed=await lettuceRadioButton.isDisplayed();
@@ -50,5 +50,16 @@ describe('advance elements', () => {
         await expect(cabbageRadioButton_isEnabled).toEqual(false);
         await expect(cabbageRadioButton).toBeDisabled();
 
+    });
+    it.only('Action', async() => {
+        await browser.url("/Actions/index.html");
+        const elem=await $('#draggable');
+        const target=await $('#droppable');
+        await browser.pause(2000);
+        await elem.dragAndDrop(target);
+        await browser.pause(2000);
+
+
+        
     });
 });
