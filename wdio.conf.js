@@ -21,7 +21,7 @@ exports.config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/**/advanced-element-interaction.spec.js'
+        './test/specs/**/*.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -91,7 +91,7 @@ exports.config = {
     //
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 100000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -127,7 +127,12 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    reporters: ['spec',['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: false,
+        disableWebdriverScreenshotsReporting: false,
+    }]],
+    
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
