@@ -2,7 +2,7 @@ describe("advance elements", () => {
   beforeEach(async () => {
     await browser.maximizeWindow();
   });
-  it.skip("inputs", async () => {
+  it("inputs", async () => {
     await browser.url("Contact-Us/contactus.html");
     const firstNameText = $("[name='first_name']");
     await firstNameText.addValue("Add your text");
@@ -13,7 +13,7 @@ describe("advance elements", () => {
     await firstNameText.clearValue();
     await browser.pause(2000);
   });
-  it.skip("dropdowns", async () => {
+  it("dropdowns", async () => {
     await browser.url("/Dropdown-Checkboxes-RadioButtons/index.html");
     const programLang_dropdown = await $("#dropdowm-menu-1");
     await programLang_dropdown.selectByAttribute("value", "python");
@@ -34,7 +34,7 @@ describe("advance elements", () => {
     });
     await browser.pause(2000);
   });
-  it.skip("State commands", async () => {
+  it("State commands", async () => {
     await browser.url("/Dropdown-Checkboxes-RadioButtons/index.html");
     const lettuceRadioButton = await $('[value="lettuce"]');
     const lettuceRadioButton_isDisplayed =
@@ -52,7 +52,7 @@ describe("advance elements", () => {
     await expect(cabbageRadioButton_isEnabled).toEqual(false);
     await expect(cabbageRadioButton).toBeDisabled();
   });
-  it.skip("Action", async () => {
+  it("Action", async () => {
     await browser.url("/Actions/index.html");
     const elem = await $("#draggable");
     const target = await $("#droppable");
@@ -71,7 +71,7 @@ describe("advance elements", () => {
     await firstLink.click();
     await browser.pause(3000);
   });
-  it.skip("handling windows", async () => {
+  it("handling windows", async () => {
     await browser.url("https://www.webdriveruniversity.com/");
     await browser.newWindow("https://www.automationteststore.com/");
     let currentWindow_title = await browser.getTitle();
@@ -95,7 +95,7 @@ describe("advance elements", () => {
     console.log(await browser.getTitle());
     await browser.pause(3000);
   });
-  it.skip("IFrames", async () => {
+  it("IFrames", async () => {
     await browser.url("/IFrame/index.html");
     const iframe = await $("#frame");
     await browser.switchToFrame(iframe);

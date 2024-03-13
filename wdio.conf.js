@@ -1,3 +1,8 @@
+const allure = require('allure-commandline');
+import fs from "fs";
+
+const commands = require('./utils/commands.js');
+
 exports.config = {
     //
     // ====================
@@ -21,12 +26,24 @@ exports.config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/**/*.spec.js'
+        './test/specs/webdriver-university/*.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
-        // 'path/to/excluded/files'
+       //'./test/specs/**/contact-us.spec.js'
+
     ],
+    suites: {
+        smoke: [
+            'test/specs/automation-test-store/add-items-to-basket.spec.js',
+            'test/specs/webdriver-university/locating-elements.spec.js',
+            'test/specs/webdriver-university/contact-us.spec.js'
+        ],
+        automationteststore: [
+            'test/specs/automation-test-store/add-items-to-basket.spec.js'
+        ]
+    },
+
     //
     // ============
     // Capabilities
@@ -49,9 +66,35 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome'
+    capabilities: [{ 
+        maxInstances: 2,
+        browserName: 'chrome',
+        acceptInsecureCerts: true,
+        'goog:chromeOptions': {
+            args: [
+                "--incognito"
+            ]
+        }
+    }, {
+        maxInstances: 2,
+        browserName: 'firefox',
+        'moz:firefoxOptions': {
+            args: [
+                "-private"
+            ],
+        },
+        timeouts: {
+            pageLoad: 30000
+        }
     }],
+    
+    // {
+    //     maxInstances:2,
+    //     browserName: 'safari'
+    // }, {
+    //     maxInstances:2,
+    //     browserName: 'MicrosoftEdge'
+    // },
 
     //
     // ===================
@@ -61,8 +104,6 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
-    //logLevel: 'error',
-
     //
     // Set specific log levels per logger
     // loggers:
@@ -86,12 +127,10 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-   baseUrl: 'https://www.webdriveruniversity.com',
-    //baseUrl: 'https://ui-adaptive-practice-rm4liovrja-ue.a.run.app/',
-    //
+    baseUrl: 'https://www.webdriveruniversity.com',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 100000,
+    waitforTimeout: 10000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -105,7 +144,7 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: ['chromedriver'],
-    //
+
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
@@ -127,18 +166,19 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec',['allure', {
+    reporters: ['spec',
+    ['allure', {
         outputDir: 'allure-results',
         disableWebdriverStepsReporting: false,
         disableWebdriverScreenshotsReporting: false,
-    }]],
-    
+    }]
+],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 600000
+        timeout: 60000
     },
 
     //
@@ -193,15 +233,21 @@ exports.config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {object}         browser      instance of created browser/device session
      */
-    // before: function (capabilities, specs) {
-    // },
+    before: function (capabilities, specs) {
+        require('expect-webdriverio').setOptions({wait: 10000, interval: 500});
+
+    },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {string} commandName hook command name
      * @param {Array} args arguments that command would receive
      */
-    // beforeCommand: function (commandName, args) {
-    // },
+    beforeCommand: function (commandName, args) {
+        Object.keys(commands).forEach(key => {
+            browser.addCommand(key, commands[key]);
+        })
+ 
+    },
     /**
      * Hook that gets executed before the suite starts
      * @param {object} suite suite details
@@ -235,8 +281,12 @@ exports.config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest: async function(test, context, { error, result, duration, passed, retries }) {
+        if(error) {
+            await browser.takeScreenshot();
+        }
+
+    },
 
 
     /**
@@ -279,8 +329,27 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
+    onComplete: function(exitCode, config, capabilities, results) {
+        const reportError = new Error('Could not generate Allure report')
+        const generation = allure(['generate', 'allure-results', '--clean'])
+        return new Promise((resolve, reject) => {
+            const generationTimeout = setTimeout(
+                () => reject(reportError),
+                30000)
+
+            generation.on('exit', function(exitCode) {
+                clearTimeout(generationTimeout)
+
+                if (exitCode !== 0) {
+                    return reject(reportError)
+                }
+
+                console.log('Allure report successfully generated')
+                resolve()
+            })
+        })
+
+    },
     /**
     * Gets executed when a refresh happens.
     * @param {string} oldSessionId session ID of the old session
